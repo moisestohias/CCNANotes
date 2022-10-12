@@ -1,0 +1,7 @@
+Negotiating trunking protocol:
+First, consider the type of trunking. Cisco switches that support ISL and 802.1Q can negotiate which type to use, using the Dynamic Trunking Protocol (DTP). If both switches support both protocols, they use ISL; otherwise, they use the protocol that both support. Today, many Cisco switches do not support the older ISL trunking protocol. Switches that support both types of trunking use the switchport trunk encapsulation {dot1q | isl | negotiate} interface subcommand to either configure the type or allow DTP to negotiate the type.
+
+DTP can also negotiate whether the two devices on the link agree to trunk at all, as guided by the local switch port’s administrative mode. The administrative mode refers to the configuration setting for whether trunking should be used. Each interface also has an operational mode, which refers to what is currently happening on the interface and might have been chosen by DTP’s negotiation with the other device. Cisco switches use the switchport mode interface subcommand to define the administrative trunking mode, 
+
+- The administrative mode refers to the configuration setting.
+- The operational mode refers to what is currently happening on the interface.
