@@ -3,7 +3,7 @@
 
 We can get a quit a bit of information if we have a physical access to that switch in a form of LEDs, different models have different LEDs.
 
-!Warning: You need to refer to the catalog of your device for specific information. But generally many of  CISCO switches use almost the same signaling. 
+!Warning: You need to refer to the catalog of your device for specific information. But generally many of  CISCO switches use almost the same signaling.
 
 # Catalyst 2960 series Switch LED:
 ### syst (system):
@@ -35,34 +35,37 @@ For switch that support stacking, like the 3750 series switch. The port address 
 + Normal stand alone switch: Module/PortNumber
 For the port that are built-in to the switch, which means are managed by the mother board, The Module is always 0 in this case. Because the Motherboard is considered 0.
 
-## Lesson 2 Logging In  =================================
+# Lesson 2 Logging In
 ## Connecting via the Console:
 If we want to connect to the switch for the first time, we need to have:
 + A physical access to the switch hardware,
 + A console cable aka 'Role over cable' (RJ-45 from one side that connects to the switch, and 9-pin serial connector (DE9 but commonly referred to as DB9) on the other side)
-!Note: the name of the Roll-Over came from the fact if you want to make your own console cable you have to roll-over all the individual wires of the cable, unlike the corss-over cable Ethernet cables, the roll-over literally flips the all wire, 1->8, 2->7 ...  
-!More info about serial ports and connections: https://www.youtube.com/watch?v=O1MhwPb2NWA
+!Note: the name of the Roll-Over came from the fact if you want to make your own console cable you have to roll-over all the individual wires of the cable, unlike the corss-over cable Ethernet cables, the roll-over literally flips the all wire, 1->8, 2->7 ...
+>[More info about serial ports and connections](youtube.com/watch?v=O1MhwPb2NWA)
 + A Serial-to-USB adapter if the Lab-top doesn't have a serial port which is the case with all modern laptops, or if the switch has Mini-USB port we can use a USB-miniUSB cable and the appropriate driver to connect to the switch.
 + A terminal emulator e.g Putty, TeraTerm, SecureCRT.
 Pinouts: is how the individual wires in the roll-over cable are are used.
 
-!Note: This is critical, if you're planning on performing password recovery, you need a serial cable (roll-over cable) that uses the prolific chipset (costly compared to non-prolific one), which support the sending of a break signal. 
+!Note: This is critical, if you're planning on performing password recovery, you need a serial cable (roll-over cable) that uses the prolific chipset (costly compared to non-prolific one), which support the sending of a break signal.
 !Note: The auxiliary port is used to connect to device remotely using modem, the aux cable must be connected to modem, you have to dial up the connection and this will give access remotely.
-!Warning: the big difference between console and the aux port, is that the console port will be active during the router boot process, which is the key idea that allows for password recover, while the aux port will be active only after the device is booted. Another key difference is that the console port has no login enabled on it and privilege level is 15, the aux port on the other hand, has no password but its privilege level is 1. You will only be able to fully access the device for configuration and management after you configure a password because the "login" 
+!Warning: the big difference between console and the aux port, is that the console port will be active during the router boot process, which is the key idea that allows for password recover, while the aux port will be active only after the device is booted. Another key difference is that the console port has no login enabled on it and privilege level is 15, the aux port on the other hand, has no password but its privilege level is 1. You will only be able to fully access the device for configuration and management after you configure a password because the "login"
 
 !Note: if you are using USB to Serial adapter, in Windows go to device manager and look under serial connection, you will see a the COM port and its number, you need to use that com interface with that number if your terminal emulator.
 
--> Default Settings of a console port on Cisco devices:
-Bits per sec    :  9600 
-Data bits       :     8 
-Parity          :  none 
-Stop bits       :     1 
-Flow control    :  none 
+##  Default Settings of a console port on Cisco devices:
+|params       | default|
+|-------------|--------|
+|Bits per sec |  9600  |
+|Data bits    |     8  |
+|Parity       |  none  |
+|Stop bits    |     1  |
+|Flow control |  none  |
 
-== Configuring a Management IP Address  ==================
-** in order to access the switch remotely, it has to have a Management IP, and default Gateway (just like a PC on the network), to give the switch Man IP we need to have a physical access so we can console to the switch and do that, because all the switchs are layer two device, and all of ports are supposed to connect to either hosts, or other network device, we need SVI (Switch Virtual Interface) to assign the mangement IP to it**
 
-==>show line : displays the connection lines available to connect to the device, the starred ones indicate the active line(s).
+# Configuring a Management IP Address
+**In order to access the switch remotely, it has to have a Management IP, and default Gateway (just like a PC on the network), to give the switch Man IP we need to have a physical access so we can console to the switch and do that, because all the switchs are layer two device, and all of ports are supposed to connect to either hosts, or other network device, we need SVI (Switch Virtual Interface) to assign the mangement IP to it**
+
+`show line`: displays the connection lines available to connect to the device, the starred ones indicate the active line(s).
 
 ## the switch by default has all of its port on one default VLAN vlan1, since that VLAN is built in and native it's perfect (for now) for it to have the management IP, so we need to assign the Management IP to that VLAN.
 
@@ -71,12 +74,12 @@ Flow control    :  none
 (config-if)# IP address "IP" "SubnetMask".
 (config-if)# not shutdown: as a good practice because it might not the default VLAN and it's shutdown.
 
-== Configuring a Default Gateway  ==================
+# Configuring a Default Gateway
 - to be able to access that device through a network this devise need default Gateway IP.
 ### to assigns the default Gateway: IP default-gateway "IP"
 ## ip name-server server-ip-1 [server-ip-2 …]: Global command. Configures the IPv4 addresses of DNS servers, so any commands when logged in to the switch will use the DNS for name resolution.
 
-== Setting Console and VTY Passwords  ==================
+# Setting Console and VTY Passwords
 !Note: the reason you can't telnet to a CISCO device until you assign a password to the VTY line, is because the login command is there by default (under the vty line), which require a login procedure to be taken, and there is no password present so the telnet will be prohibited. If you want to disable the login security prompt, you need to enter under the vty line "no login".
 
 ## show line : display the connection lines that we can connect through to the device.
@@ -145,9 +148,9 @@ messages to the console.
 
 
 ## Show commands:
-show dhcp lease: Lists any information the switch acquires as a DHCP client. This includes IP address, subnet mask, and default gateway information.
-show crypto key mypubkey rsa: Lists the public and shared key created for use with SSH using the crypto key generate rsa global configuration command.
-show ip ssh: Lists status information for the SSH server, including the SSH version.
-show ssh: Lists status information for current SSH connections into and out of the local switch.
-show ip default-gateway
-show history
++ `show dhcp lease`: Lists any information the switch acquires as a DHCP client. This includes IP address, subnet mask, and default gateway information.
++ `show crypto key mypubkey rsa`: Lists the public and shared key created for use with SSH using the crypto key generate rsa global configuration command.
++ `show ip ssh`: Lists status information for the SSH server, including the SSH version.
++ `show ssh`: Lists status information for current SSH connections into and out of the local switch.
++ `show ip default-gateway`:
++ `show history`:
