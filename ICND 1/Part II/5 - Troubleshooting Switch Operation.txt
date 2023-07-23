@@ -87,5 +87,4 @@ After resolving the what ever was causing the problem in your link, you might wa
 *Note: VLAN Hopping: when two or more switches doesn't agree on the same Native Vlan. **
 
 
-sousoutouhami@hotmail.com
-cryptographic_authentication
+

@@ -1,6 +1,6 @@
-## VLAN: ####################################################
+# VLAN:
 
-🔱 !Warning: -Niggga thees issues can be so obsecure, you need to check the Spanning-tree instances of the VLANs- If you have an end-to-end switched domain, for a packet to go from one device to another device, on the same VLAN, all switches in the transit path must know and trunk that packet's VLAN. For instance if you have a VTP transparent mode (must be in the same domain or NULL) or VTP off mode switch in the transit path that is not learning VTP ads, so it doesn't know about that VLAN, but the ends switches know about that VLAN through VTP, so what's end up happening the end switches knows about the VLANs through VTP but the transparent/off switch doesn't, it doesn't even trunk it.
+🔱 !Warning: -Dude thees issues can be so obsecure, you need to check the Spanning-tree instances of the VLANs- If you have an end-to-end switched domain, for a packet to go from one device to another device, on the same VLAN, all switches in the transit path must know and trunk that packet's VLAN. For instance if you have a VTP transparent mode (must be in the same domain or NULL) or VTP off mode switch in the transit path that is not learning VTP ads, so it doesn't know about that VLAN, but the ends switches know about that VLAN through VTP, so what's end up happening the end switches knows about the VLANs through VTP but the transparent/off switch doesn't, it doesn't even trunk it.
 !Note: the switch don't trunk (thus don't run STP) VLAN, that he doesn't know.
 !Warning: All transit siwtches must know about all VLANs in the domain, even if they don't have any port assigned to them, otherwise STP won't work correctly.
 
@@ -11,15 +11,15 @@ VLAN: A technique that lets you have multiple logical LANs operating on the same
 💠 !Note: CCNA CertGuid MADE CLEAR that Any created VLAN will be listed in the output of the show running-config command, and that's because the VTP is disabled on most of the book.
 !Note: When you work with a switch that doesn't give you the option to disable VTP, no vlan command will show up in the running/startup config.
 
-==> Collision Domains VS Broadcast Domains:
+# Collision Domains VS Broadcast Domains:
 -Collision Domain: is a network segment where only one device can talk at a time.
 -Ethernet Broadcast Domains: Take any Ethernet LAN, and pick any device. send an Ethernet broadcast.  An Ethernet broadcast domain is the set of devices to which that broadcast is delivered.
 !Note: By default, switches break up collision domains and routers break up broadcast domains.*
 
-=> Ethernet Switches and Collision Domains
+## Ethernet Switches and Collision Domains
 - switches perform the same basic core functions as bridges but at much faster speeds, and with many enhanced features. Like bridges, switches segment a LAN into separate collision domains, each with its own capacity. And if no link is connected to a hub, every single link in the switch is considered its own collision domain.
 
-*Non Technical definition of VLAN :
+## Non Technical definition of VLAN :
 A VLAN is a logical grouping of the network. When you create VLANs, you’re given the ability to create smaller broadcast domains within a layer 2 switched internetwork by assigning different ports on the switch to service different subnetworks.
 
 -A VLAN is treated like its own subnet (broadcast domain), meaning that frames broadcast onto the network are only switched between the ports logically grouped within the same VLAN.
@@ -39,7 +39,7 @@ VLAN can solve many of the problems associated with layer 2 switching.
 
 !Note: by default, all the Ethernet ports of the switch are part of the first VLAN vlan1 which is the native VLAN (concept discussed below), there are other built-in native VLANs (that you will never use like token-ring, FDDI (Fiber Distributed Data Interface)) each switch can have up to 1001 VLANs, and the other built-in from 1002 > 1005.
 
-=> Deleting VLANs:
+# Deleting VLANs:
 (config)#no vlan "VLAN-ID": removes the VLAN.
 !Note: when we create a VLAN, that configuration is stored on a special separate file "vlan.dat" on the switch's FLASH memory, which is the VLAN database, we can display that file by typing: show flash > the name of the file is vlan.dat *
 
@@ -53,7 +53,7 @@ VLAN can solve many of the problems associated with layer 2 switching.
 !Note: the 'write erase' will only erase the NVRAM content, but not the VLAN database 'vlan.dat' which lives in a totally different space.
 > write ? or wr? : to see all the commands available with write.
 
-=> Erasing the vlan data base 
+# Erasing the vlan data base 
 (config)#delete flash:/vlan.dat : this will erase only vlan.dat from flash .
 or:
 #delete vlan.dat
@@ -64,7 +64,7 @@ or:
 !Note: it's always a good idea to Reload the switch after deleting configuration.
 
 = Assigning ports to a VLAN =================================
-=> when we create a new VLAN we have to manually assign the switch's ports that belong to that VLAN. 
+# when we create a new VLAN we have to manually assign the switch's ports that belong to that VLAN. 
 To assign a port to a VLAN there are couple ways:
 > 1 * assign an individual port to a specific VLAN: you should be in interface configuration  for a specific Ethernet interface: interface fastEthernet0/0 > switch the state and the VLAN of the port : switchport access vlan 10
 - 'access' is the mode of the operation of that specific port as suppose to trunk port that we will discuss later
@@ -101,7 +101,7 @@ SW1(config-if-range)# switchport access vlan 3
 !Note: the trunk encapsulation means: what protocol is going to be used to tag the different VLANs.
 !Note: 2960s support only 802.1Q.
 
-=> making sure that devices are using DOT1Q :
+# making sure that devices are using DOT1Q :
 !Note: when configuring a switch it's important to change the trunk encapsulation mode from negotiate to trunk because it might end up negotiating ISL, If both switches support both protocols, they use ISL *
 HQ(config-if)#switchport trunk encapsulation dot1q: changes the encapsulation mode to dot1q
 !Note: in Packet Tracer only the multi layer switches namely the 3650 and 3560 have this command.
@@ -130,7 +130,7 @@ Tag Control ID (2 Bytes) consists of:
 │Preamble|SFD|Destination|Source|Tag Prtcl ID|Tag Control ID|Ether-Type|Data|FCS│
 └────────┴───┴───────────┴──────┴────────────┴──────────────┴──────────┴────┴───┘
 
-==> there are three types of operation for each Ethernet port, 
+# there are three types of operation for each Ethernet port, 
 -> access: force a port to operate as an access port
 -> trunk: force a port to operate as a trunk port
 -> dynamic desirable: initiates the negotiation of a trunk
@@ -151,13 +151,13 @@ access             |trunk             | Link goes down by STP
 
 !Warning: if one side is configured manually to trunk and the other side manually to access, the link will be disabled by STP.
 
-==> DTP (Dynamic Trunking Protocol):
+# DTP (Dynamic Trunking Protocol):
 Protocol used to negotiate the formation of trunk between switches.
 If one or the two switches are configured to negotiate, DTP frame is going to be sent, which allows two switches to negotiate the forming of a Trunk, and if the far-end switch's port is not administratively configured as access trunk will be formed. 
 !Note: If you are planning on using DTP, you must configured the encapsulation to static dot1q, especially when working in a V-LAB or with old models that support ISL, using the command: "switchport trunk encapsulation dot1q"
 
 !Note: Cisco recommends disabling trunk negotiation on most ports for better security.
-=> Disabling DTP negotiation: to methods
+# Disabling DTP negotiation: to methods
 !Note: "switchport mode access" disable DTP negotiation on that port. 
 Trunk ports are still able negotiation with dynamic desirable, to disable DTP negotiation even on trunk ports use: "switchport nonegotiate" !Note: this command is only available in VIOS-L2.
 
@@ -192,12 +192,12 @@ Administrative Trunking Encapsulation: dot1q
 Operational Trunking Encapsulation: dot1q
 ------------------------------------------------ 
 
-==> Show Trunks
+# Show Trunks
 #show interface trunk: displays trunks on the switch, if there's any trunk configured and active it'll display it, if not nothing will be printed
 
-=> to change the encapsulation mode to dot1Q instead of negotiate: from the port we want to make as trunk: int# switchport trunk encapsulation dot1q
+# to change the encapsulation mode to dot1Q instead of negotiate: from the port we want to make as trunk: int# switchport trunk encapsulation dot1q
 
-=> to change the port mode : 
+# to change the port mode : 
 (config-if)#switchport mode? > (access ,trunk ,dynamic auto ,dynamic desirable)
 if you want the port to generate DTP frames to negotiate the forming of the trunk you need to select: dynamic desirable.
 
@@ -206,11 +206,11 @@ if you want the port to generate DTP frames to negotiate the forming of the trun
 %SPANTREE-2-BLOCK_PVID_LOCAL: Blocking GigabitEthernet0/1 on VLAN0001. Inconsistent port type.
 
 = Specifying the native VlAN =====================================
-==> to change the native Vlan: from the trunk port : 
+# to change the native Vlan: from the trunk port : 
 > (config-if)# swtichport trunk native vlan 'the VLAN number'
 !Note: if we change the native VLAN on one of the switches we have to change in the other peer as well, otherwise is not going to function properly, the technical name for Native VLAN mismatch is called VLAN Hopping.
 
-==> Inconsistent Native VLAN on Trunk link:
+# Inconsistent Native VLAN on Trunk link:
 !Warning: if two sides (trunk port of each switch) don't agree on the native VLAN, the link will be disabled by STP. You will see console log indicating that.
 -> 1 - The first log that you get after you have Native VLAN mismatch on a trunk is the STP blocking.
 
@@ -228,7 +228,7 @@ Or
 -> 3 - After MATCHING the Native VLAN again, STP unblock the link, and you will get console logs, indicating that the interfaces has recovered
 S1(config-if)#%SPANTREE-2-UNBLOCK_CONSIST_PORT: Unblocking GigabitEthernet0/2 on VLAN0002. Port consistency restored.
 
-==> Implementing ports connecting to IP phone:
+# Implementing ports connecting to IP phone:
 !Note: CDP must be enabled on an interface for a voice access port to work with Cisco IP phones.
 Access Ports connecting to IP phone which the later connect to end device, must be configured to support VLAN tagging, using the "switchport voice vlan <VLAN-ID>" interface command.
 Or you can use the old method of doing it (Not recommended), which is to configure a trunk allowing only two VLANs (voice and data) and setting the data VLAN to be the native on that port (aka mini-trunk)
@@ -238,7 +238,7 @@ switchport trunk native vlan 20
 switchport nonegotiote !Disable negotiation with 'Dynamic Desirable' ports.
 
 = Limiting VlANs on a trunk =====================================
-=> We can manually set which VLANs are allowed to cross that trunk and which is going to get blocked.
+# We can manually set which VLANs are allowed to cross that trunk and which is going to get blocked.
 !Note: by default all newly created VLANs are allowed to pass the trunk *
 
 (config-if)# switchport trunk allowed VLAN ? 
@@ -261,20 +261,20 @@ VTP is a protocol that FLOW OVER A TRUNK and it carries VLAN information, so whe
 
 !Note: that both transparent and off modes prevent VTP from 'learning' and advertising about VLAN configuration. Additionally, switches using transparent or off modes, list the VLAN configuration commands in the running-config file. so if VTP wasn't disabled don't expect to see VLAN info in the running-config *
 
--> VTP Pros :
-- Eliminates a lot of Administrative Burk, if you create a VLAN on one switch, that information can propagate to the other switch through Advertisement so the rest of the switches in the network will know about this VLAN.
-- Eliminates a lot of unnecessary traffics (VTP Pruning). 
++ VTP Pros :
+  - Eliminates a lot of Administrative Burk, if you create a VLAN on one switch, that information can propagate to the other switch through Advertisement so the rest of the switches in the network will know about this VLAN.
+  - Eliminates a lot of unnecessary traffics (VTP Pruning). 
 
--> VTP Cons :
-- Many people suggest to not use VTP since in working environment there are different brand of switches, so using VTP won't be feasible, on the contrary VTP can introduce a lot of issues and headache.
-- because the VTP WIPE-OUT many Net-Engineers prefer not to use VTP, and argue that the unnecessary traffic isn't that large to affect the network performance.
++ VTP Cons :
+  - Many people suggest to not use VTP since in working environment there are different brand of switches, so using VTP won't be feasible, on the contrary VTP can introduce a lot of issues and headache.
+  - because the VTP WIPE-OUT many Net-Engineers prefer not to use VTP, and argue that the unnecessary traffic isn't that large to affect the network performance.
 
-=> There are three modes of VTP operation: Server, Client, Transparent.
-• Server and client are almost the same except that you can't modify VLANs on client, but both receive, update, forward and generate VTP adds.
+#  There are three modes of VTP operation: Server, Client, Transparent.
++ Server and client are almost the same except that you can't modify VLANs on client, but both receive, update, forward and generate VTP adds.
 !Note: The server switches can configure VLANs in the standard range only (1–1005).
-• Transparent (version 2): it's what it sounds like, forward received VTP adds only if it's part of the same or the NULL domain, but doesn't update nor generate VTP adds.
++ Transparent (version 2): it's what it sounds like, forward received VTP adds only if it's part of the same or the NULL domain, but doesn't update nor generate VTP adds.
 !Note: Transparent VTP version 1, DOES NOT forward received VTP adds, even if it's configured as part of the same domain,
-• Off: it's what it sounds like, forward received VTP adds, but doesn't update nor generate VTP adds.
++ Off: it's what it sounds like, forward received VTP adds, but doesn't update nor generate VTP adds.
 
 !Note: that both transparent and off modes prevent VTP from learning and advertising about VLAN configuration. Those modes allow a switch to configure all VLANs, including standard and extended-range VLANs. Additionally, switches using transparent or off modes list the vlan configuration commands in the running-config file.
 
@@ -283,33 +283,33 @@ VTP is a protocol that FLOW OVER A TRUNK and it carries VLAN information, so whe
 !Warning: creating or modifying the domain name forces the ConfRevNum to jump back to zero.
 !Note: all switches by default are set to Servers mode
 
-==> VTP Pruning:
+# VTP Pruning:
 If an access switch doesn't have access ports for certain VLANs, VTP will tell the other switches to not send traffic of that VLAN to this switch so the traffic will be pruned.
 !Note: VTP pruning can only performed on trunk between two switches running as Server or Client.
 !Note: Only VLAN in the standard range 2-1001 can be pruned.
 You can tell the switch which VLAN it can purne on per trunk basis, using "switchport trunk pruning vlan <VLAN-ID>" 
 To verify VLANs that are pruned: "show interface pruning", the first list is the pruned VLANs, the second list is the VLAN that the local switch is asking for from its neighbor.
 
-=> VTP Pruning corener cases:
+# VTP Pruning corener cases:
 !Note: On trunk ports connecting to Hypervisors or devices that don't implement VTP or running transparent mode, you must configured the allowed VLAN manually otherwise VTP device will end up asking for ALL VLANs it knows about, which will partially cancel out the benefits of VTP pruning, because it doesn't know what the other end have it term VLANs.
 
 !Warning: if you are planning on using VTP pruning in your network, don't have switches running in the transparent mode. Especially on transit switches, because what will end up happening is the switch will forward the VTP traffic request of other switches, but it won't ask for its VLANs.
 
-==> Configuration Revision Number:
+# Configuration Revision Number:
 Every time a database change is made there is a number called a 'Configuration Revision Number' that is associated with the switches VLAN database - this includes Creating, Naming , Renaming, Deleting VLAN.- and that number get incremented by one for every change made. When a change occurs in one of the switches that has not being configured to be transparent it generates VTP Advertisements, when the other switches receive that ADs it compares it to its local ConfRevNum, and if it's greater, then it's going to update its local database based on the received Infos.
 -When all switches in the network agree on the same common VLAN database (they all have the same configuration revision number) synchronization is complete.
 
 !Note: There three versions of VTP 1,2,3, the big difference between version one and two is that in version 1, if the transparent mode switch is not in the same domain, it will block VTP messages. We primarily use Version 2, since the transparent switch wont block VTP adds even if it belong different VTP domain.  
 Version 3 is supported on the newer CISCO switches, it sends extended VLAN (VLANs in a range of 1006 to 4094), it's able to advertise private VLAN.
 
-==> VTP Domain
+# VTP Domain
 In order for VTP to work the switches that are going to be exchanging VTP information they need to belong to the same domain, if we have a password set up the password need to match.
 !Warning: Domain name and password are case sensetive.
 =>VTP domain mismatch
 !Note: if two adjacent switches belong to different VTP domain Trunk link won't be formed and you will get Mismatch Error console Logs every 30 s:
 "00:17:59 %DTP-5-DOMAINMISMATCH: Unable to perform trunk negotiation on port Gig0/1 because of VTP domain mismatch".
 
-==> VTP Updates:
+# VTP Updates:
 -VTP sends VTP message every 5 minutes, which contain just basic Info like VTP domain name, the ConfRevNum, and some other data, in another word it won't create a big impact on the network. 
 !Note: VTP only goes over a trunk line because is only destined to switches.
 !Note: When you make a VLAN modification on a server switch, a VTP advertisement will be send immediately.
@@ -319,7 +319,7 @@ In order for VTP to work the switches that are going to be exchanging VTP inform
 =>to change the VTP mode of the switch; (config)#vtp mode {client, server, transparent}.
 =>to create (or change) the VTP domain; (config)#vtp domain "domain name"
 =>to set a password to the domain; (config)#vtp password "passwrd"
-=> to enable VTP pruning so unnecessary trafic will not be sent across the trunk ; (config)#vtp pruning
+# to enable VTP pruning so unnecessary trafic will not be sent across the trunk ; (config)#vtp pruning
 
 !Warning: If you don't create any VTP domain, all switches will belong to their own independent default NULL VTP domain - no domain - and won't exchange VTP message (VLAN database). In order to make all the switch part of the same domain you have to manually assign at least one switch a domain name (assuming the other switches have no VTP domain name and therefore will join the created domain, otherwise you have to manually assign all switches the same domain). The moment you match the VTP domain on server or client switches, the VTP database will synchronize base on the switch with the higher ConfRevNum
 
@@ -332,7 +332,7 @@ which in most cases, we may not want that because that will get rid of the VLAN 
 
 !Note: when you set the VPT mode to transparent, it does not only prevent the switch from learning and advertising about VLANs, it also prevent it from storing the VlANs information it know about in the VLAN database file 'vlan.dat'.
 
-=> Adding New Switch To The Production Network: 
+# Adding New Switch To The Production Network: 
 !Note: by default the all of the switch ports are set administratively to dynamic auto, so they passively wait for DTP messages negotiating the formation of trunk, if no DTP messages are received the port will operate as access port.
 So when you connect fresh brand new switch to already working environment, that has VTP domain name and one or more switch operating as VTP Server (ConfRevNum greater than 0), if the port of the pre-switch is configured as trunk or dynamic desirable DTP messages will be originated to negotiate the formation of trunk link, and because the fresh switch ports are by default set to dynamic auto the trunk will be formed, and the VTP protocol will communicate the VTP domain name, and because the fresh switch has no VTP domain name, will automatically join the VTP domain (assuming the VTP domain has no password), and eventually learn about the VLANs in the domain.
 - Adding New Switch To The Production Network: Configuration: 
@@ -347,22 +347,22 @@ SW(config)#delete flash:vlan.dat : extra step of cautiousness
 !Warning: Even though, you can have pairs of Trunk ports, agree on a different Native VALN other than the main Native VLAN used in the rest of the Domain, It is impractical neither useful, since all Native VLANs traffic will end up mixed up, as one broadcast domain and you no longer have the concept of VLANs isolation. It's rather confusing.
 So all in all, all switch in the VTP domain should all use the same Native VLAN.
 
-==> VTP Version 3:
+# VTP Version 3:
 !Note: any switch that support VTPv3, allows for disabling VTP globally (VTP mode off). 
 -> Security feature:
 VTP v3 adds a counter measure security feature to protect against the problem of VTP WIPE-OUT, by introducing the concept of the Primary and secondary server. This is an extra layer of server role on top of the VTP modes, by default all devices are secondary servers, only one device on the network is allowed to be the primary, all switches list his MAC as being the primary, and obey hist ads.
 
-=> VTP v3 Advertisements:
+# VTP v3 Advertisements:
 The support for the extended range VLANs, which can create and advertise VLANs in the extended range.
 Can create and advertise Private-VLAN
 Can advertise MST configuration.
 
-=> VTP v3 Password:
+# VTP v3 Password:
 VTP as I've mentioned before version 3 adds an extra layer of feature to protection against the problem of VTP WIPE-OUT, by introducing the Primary/secondary server role, and you can assign a password to the domain just like before. Now, you can enforce the switch to prompt the administrator to enter the domain's password when upgrading a switch to be the Primary for the domain, even if the switch is already been authenticated as part of the domain, by adding the "hidden" keyword. 
 vtp password <pass> hidden !this will store the password in the NVRAM:vlan.dat.
 !Note: if you use the "hidden" keyword, "show vtp password" won't show you the password.
 
-=> Upgrading a switch to be the primary server of the domain:
+# Upgrading a switch to be the primary server of the domain:
 To upgrade a switch to be the primary server, IT MUST BE RUNNING AS A VTP SERVER MODE, and the configuration is carried out in the user exec mode, because this configuration is not written into either the run nor the startup config, it just take effect in place once the switch is rebooted, the primary role is lost.
 vtp primary-server [vlan|mst] [force]
 -vlan: set the switch to be primary server for the VLAN VTP domain advertisement.
@@ -371,14 +371,14 @@ vtp primary-server [vlan|mst] [force]
 If you append "force" this will take over the primary server role in the domain, if there is an existing Primary server, it must submit. Otherwise it will fail and say there are already a primary server in the domain.
 !Note: separating vlan from mst, provide flexibility sine a switch can be the primary VTP server for the VLAN database, but a client for MST.
 
-=> Why transporting MST configuration over VTP:
+# Why transporting MST configuration over VTP:
 The reason why VTP adds the support for carrying and synchronizing MST configuration, is for solving the problem of MST configuration mismatch (creating multiple region), if you recall from MSTP section that one of the design requirement that we have is, for a switches to be part of the same region the VLAN to instance mapping needs to match along side the region name and revision. For instance if you don't have a VTP version 3, and you add an instance, the switch will be in its own region, till you match the MST configuration in the other boxes. 
 
 Can Remote-Span VLAN advertised via VTP? Yes
 
-=> To fix the problem of pruning requests are not replied to, you can use the standard solution that works for all VTP version, by using the allowed vlan on the trunk. With VTP version 3 however you can turn VTP off per port "no vtp run", so VTP pruning request are not sent.
+!Note: To fix the problem of pruning requests are not replied to, you can use the standard solution that works for all VTP version, by using the allowed vlan on the trunk. With VTP version 3 however you can turn VTP off per port "no vtp run", so VTP pruning request are not sent.
 
-==> VTP verification:
+# VTP verification:
 show vtp status
 !Displays the VTP configuration on the switch, and the IP of the last device updated the VLAN database.
 show vtp password
@@ -387,17 +387,17 @@ show vtp password
 
 
 ----- the benefits of VLANs: ------------------------------
-• VLANs increase the number of broadcast domains while decreasing their size.
-• VLANs greatly enhance network security if implemented correctly.
-• Network adds, moves and changes are achieved with ease by just configuring a port into the appropriate VLAN.
-• A group of users that need an unusually high level of security can be put into its own VLAN so that users outside of that VLAN can’t communicate with the group’s users.
++ VLANs increase the number of broadcast domains while decreasing their size.
++ VLANs greatly enhance network security if implemented correctly.
++ Network adds, moves and changes are achieved with ease by just configuring a port into the appropriate VLAN.
++ A group of users that need an unusually high level of security can be put into its own VLAN so that users outside of that VLAN can’t communicate with the group’s users.
 -------------------------------------------------------------
 If you delete a VLAN that has ports assigned to it, even though the ports won't show up in the show vlan, but the configuration of "access vlan <deleted-VLAN-ID>" in the running config, won't be deleted you just need to re-itrduce the VLAN.
 
-==> VTP Takeaway:
-• VTP advertisements only propagate between devices on a defined VTP domain.
-• If you only create VLANs without specifying a VTP domain name, the VTP wont advertise about these VLANs.
-• Every time you define or change the VTP domain name, the ConfRegNum will jump back to zero. So if you change the domain name after creating your VLANs, the ConfRegNum will go back to zero and if an another switch has a ConfRegNum other than zero and don't belong to any domain, it will join the domain via VTP, and its VLAN database will take over the domain.
+# VTP Takeaway:
++ VTP advertisements only propagate between devices on a defined VTP domain.
++ If you only create VLANs without specifying a VTP domain name, the VTP wont advertise about these VLANs.
++ Every time you define or change the VTP domain name, the ConfRegNum will jump back to zero. So if you change the domain name after creating your VLANs, the ConfRegNum will go back to zero and if an another switch has a ConfRegNum other than zero and don't belong to any domain, it will join the domain via VTP, and its VLAN database will take over the domain.
 
 =>Equal ConfRevNum (ConfRevNum greater than 0):
 !Note: in case of tow switches have Configuration Revision Number equal to each other AND GRETER THAN 0, but they both don't belong any VTP domain, 

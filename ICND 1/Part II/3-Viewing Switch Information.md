@@ -1,14 +1,14 @@
-3 - Viewing Switch Information.txt
+#3-Viewing Switch Information.txt
 show processes cpu !displays the CPU utilization.
 ip routing !Enable routing 
 
-=> Adding default route to Windows PC:
+### Adding default route to Windows PC:
 -route print: print the routing table.
 -You can add static route to Windows PC routing table using: route add command
 route add <IP> mask <mask> <egress-interface> metric <lower metric if there are other default route>
 eg; route add 10.0.10.0 mask 255.255.255.0 10.0.0.1 metric 5
 
->=> Lesson 3 - viewing the switch information ==============================
+## Lesson 3 - viewing the switch information ==============================
 !Note: There are five IOS modes: - user EXEC mode, privileged EXEC mode, global configuration mode, setup mode, and ROM Monitor mode. The first three modes are used to view current settings and configure new settings or modify existing settings.
 
 = IOS Version ===============================
@@ -45,7 +45,7 @@ the switch continually update its MAC table by removing mac address of the devic
 
 
 = Port Security ===============================
->=> port security is feature that allow us to protect the network by configuring rules and actions that will take place based on those rules.
+## port security is feature that allow us to protect the network by configuring rules and actions that will take place based on those rules.
 
 !Warning: to be able to set the port-security functionality the port should be in STATIC ACCESS MODE. *
 
@@ -102,28 +102,28 @@ You can configure error recovery on the switch to bring the port up automaticall
 - by default after a period of inactivity the line (console or vty) will timeout and exit, you can set the timeout period or disable it.
 > (config-line)# exec-timeout "min" "sec" : 0 0 means don't timeout
 
-= Creating banner ===============================
-==> banner can be set to display a message to the user,
-> banner ? : to see what banner you can set on the device
+## Creating banner ===============================
+### banner can be set to display a message to the user,
++ banner ? : to see what banner you can set on the device
 !Note: MOTD sometimes cannot be displayed when connecting using ssh, login is the most used.
-> banner login "message": put the msg between two character delimiters, you can use any character as a delimiter.
++ banner login "message": put the msg between two character delimiters, you can use any character as a delimiter.
 
-= Specifying the port speed and Duplex ===================
+## Specifying the port speed and Duplex
 Most Ethernet ports speed and duplex mode can be changed:
 (config-if)# speed ? : to change the port speed.
 (config-if)# duplex ? :(auto, full, half): to change the port duplex:
 
 MDIX : Media Dependent Interface crosXover. is auto and can't be change.
 
-= CDP ======================================
+## CDP
+CISCO Discovery Protocol (CDP): Cisco propitiatory protocol used to discover neighboring devices(directly connected)
 !Note:CDP must be enabled on an interface for a voice access port to work with Cisco IP phones.
-=> CDP CISCO Discovery Protocol: used to discover neighboring devices(directly connected)
-> show cdp
-> show cdp detailed : to display detailed information about the neighboring devices.
-==> to turn off CDP globally : # no cdp run
-==> to turn CDP globally back on: # cdp run
-==> to turn CDP version 2 off so you only use version 1: #no cdp advertise-v2 , (not a good idea)
-==> to turn CDP for specific interface, from that interface: (config-if)#no cdp enable, so useful if that specific interface is connected to another autonomous system that's not under our administration.
+show cdp
+show cdp detailed : to display detailed information about the neighboring devices.
++ To turn off CDP globally : # no cdp run
++ To turn CDP globally back on: # cdp run
++ To turn CDP version 2 off so you only use version 1: #no cdp advertise-v2 , (not a good idea)
++ To turn CDP for specific interface, from that interface: (config-if)#no cdp enable, so useful if that specific interface is connected to another autonomous system that's not under our administration.
 *CDP is nice option for small network, but isn't that great for large scale network with 100s of devices*
 
 #arp "IP-address" : display the mac address for the specified address if it exist on the arp cash

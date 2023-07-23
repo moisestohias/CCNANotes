@@ -1,10 +1,12 @@
 === IPv6 : === === === === === === === === === === === === === === === === 
 
-IPv6 : is 128 bit address that meant to solve the problem of the expiration of the ipv4 in the future, represented as 32 hex digit, and usually abbreviated (compressed), IPv6 also has simplified header, 5 fields instead of 12 fields, 
-- IPv6 also desinged with Security and mobility features built-in the protocol.
-- IPv6 abandon the concept of fragmentation, MTU discovery is performed for each session.
-- IPv6 can coexist with IPv4 during migration
-- IPv6 traffic can go over IPv4 by creating a tunnel
+IPv6 : is 128 bit address that meant to solve the problem of the expiration of the ipv4 in the future, represented as 32 hex digit, and usually abbreviated (compressed)
++ No-broadcast: All node multicast if needed to broadcast.
++ IPv6 has simplified header, 5 fields instead of 12 fields, 
++ IPv6 also desinged with Security and mobility features built-in the protocol.
++ IPv6 abandon the concept of fragmentation, MTU discovery is performed for each session.
++ IPv6 can coexist with IPv4 during migration: Dual stack
++ IPv6 traffic can go over IPv4 by creating a tunnel
 
 ==> IPv6 can be abbreviated, and there are rules for doing so, 
 - leading zeros in each field can be omitted 
