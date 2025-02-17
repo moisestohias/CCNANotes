@@ -1,0 +1,64 @@
+
+en
+conf t
+no ip domain-lookup
+line console 0
+no exec-timeout
+logging synchro
+
+int vlan 1
+ip address 172.16.0.240 255.255.255.0
+no shut
+
+vtp domain MOISES
+vtp version 2
+vtp pruning
+
+vlan 10
+name ENG
+vlan 11
+name ACCT
+vlan 12
+name FIN
+
+!Packet-tracer
+int range fa0/1 - 5
+switchport access vlan 10
+
+!CML
+int range g0/2 - 3
+switchport access vlan 10
+
+int ran g0/1
+switchport mode trunk 
+
+--------------------
+int vlan 1
+ip address 172.16.0.241 255.255.255.0
+no shut
+
+vlan 20
+name HELLO
+vlan 21
+name WORLD
+vlan 22
+name YAW
+
+int range fa0/1 - 5
+switchport access vlan 20
+--------------------
+int vlan 1
+ip address 172.16.0.242 255.255.255.0
+no shut
+
+vlan 30
+name HELLO
+vlan 31
+name WORLD
+vlan 32
+name FOO
+vlan 33
+name BAR
+vlan 34
+name YAWW
+

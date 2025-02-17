@@ -1,0 +1,122 @@
+#CML Lab.txt
+
+open /ba6f2d/n0/0  SW1
+open /ba6f2d/n1/0  SW2
+open /ba6f2d/n2/0  R1
+open /ba6f2d/n3/0  PC1
+open /ba6f2d/n4/0  PC2
+
+!all ---------
+en
+conf t
+no ip domain-lookup
+line console 0
+no exec-timeout
+logging synchro
+
+
+!Router ---------------
+! ==>DHCP
+ip dhcp excluded-address 172.16.1.1 172.16.1.10
+ip dhcp excluded-address 172.16.2.1 172.16.2.10
+ip dhcp excluded-address 172.16.3.1 172.16.3.10
+ip dhcp excluded-address 172.16.4.1 172.16.4.10
+ip dhcp excluded-address 172.16.5.1 172.16.5.10
+
+ip dhcp pool ENG
+network 172.16.1.0 255.255.255.0
+default-router 172.16.1.1
+dns-server 4.2.2.2
+
+ip dhcp pool SALES
+network 172.16.2.0 255.255.255.0
+default-router 172.16.2.1
+dns-server 4.2.2.2
+
+ip dhcp pool CUST-SUP
+network 172.16.3.0 255.255.255.0
+default-router 172.16.3.1
+dns-server 4.2.2.2
+
+ip dhcp pool ENG2
+network 172.16.4.0 255.255.255.0
+default-router 172.16.4.1
+dns-server 4.2.2.2
+
+ip dhcp pool SALES2
+network 172.16.5.0 255.255.255.0
+default-router 172.16.5.1
+dns-server 4.2.2.2
+
+ip dhcp pool CUST-SUP2
+network 172.16.6.0 255.255.255.0
+default-router 172.16.6.1
+dns-server 4.2.2.2
+
+! ==> RoS
+int g0/0
+no shut
+int g0/0.10
+encapsulation dot1q 10
+ip address 172.16.1.1 255.255.255.0
+description ENG
+no shut
+int g0/0.20
+encapsulation dot1q 20
+ip address 172.16.2.1 255.255.255.0
+description SALES
+no shut
+int g0/0.30
+encapsulation dot1q 30
+ip address 172.16.3.1 255.255.255.0
+description CUST-SUP
+no shut
+
+! ==> RoS Int2
+int g0/1
+no shut
+int g0/1.10
+encapsulation dot1q 10
+ip address 172.16.4.1 255.255.255.0
+description ENG
+no shut
+int g0/1.20
+encapsulation dot1q 20
+ip address 172.16.5.1 255.255.255.0
+description SALES
+no shut
+int g0/1.30
+encapsulation dot1q 30
+ip address 172.16.6.1 255.255.255.0
+description CUST-SUP
+no shut
+
+
+
+! Switches ------------------
+!==> VTP
+vtp domain MOISES
+vtp version 2
+vtp pruning
+
+!==> VLANs
+vlan 10
+name ENG
+vlan 20
+name SALES
+vlan 30
+name CUST-SUP
+
+!==> Trunk
+int g0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+
+==> access ports:
+int g0/1
+switchport mode access
+switchport port-sec
+switchport port-sec maximum 1
+switchport port-sec mac-address sticky
+switchport port-sec violation protect
+
