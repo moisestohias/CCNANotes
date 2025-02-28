@@ -48,15 +48,16 @@ The Physical layer: defines the electrical, mechanical, procedural, and function
   - Connection services (flow control, Packet Reordering -only used in the case of fragmentation-)
 
 ## Transport:
-  - Segmenting protocols (TCP/UDP): split data stream into small segments that can be exchanged in the network
-  - Multiplexing (Multiple Application and services use the same IP address)
-  - Flow control:
-  - Error Detection (both TCP and UDP offer error detection)
+  - **Segmenting protocols (TCP/UDP)**: split data stream into small segments that can be exchanged in the network
+  - **Multiplexing (Multiple Application and services use the same IP address)**
+  - **Flow control**:
+  - **Error Detection** (both TCP and UDP offer error detection)
   - TCP offers far more features than UDP:
-    + Reliability: ensuring that data sent is received by the other end.
-    + Windowing (Sliding window) allow the TCP windows size to grow based on the net reliability. (TCP windows size : the number of segment can be sent before an acknowledgment is received )
-    !Note: Max Bytes per window (without getting an ACK) is 2_000_000 Bytes
-  - Buffering: if ingress interface of the router is sending data to quickly than the  egress is able to output (like the case of LAN to WAN), the router will buffer the data in a queue.
+    + **Reliability**: ensuring that data sent is received by the other end.
+    + **Windowing** (Sliding window) allow the TCP windows size to grow based on the net reliability. (TCP windows size : the number of segment can be sent before an acknowledgment is received )
+    > [!Note] Max Bytes per window (without getting an ACK) is 2_000_000 Bytes
+
+  - **Buffering**: if ingress interface of the router is sending data to quickly than the  egress is able to output (like the case of LAN to WAN), the router will buffer the data in a queue.
 
 ## Session:
   - Setting up session
@@ -84,7 +85,7 @@ Asynchronous communication means the transmitter and receiver do not share an ex
 
 Because Asynchronous communications buses don't share a separate clock signal, the transmitter has to encode each transmission in a way that allows the receiver to know when one bit ends and the next bit begins. Ethernet's solution for that is to start every transmission with a long series of alternating 0 and 1 bits -- the preamble -- which allows the receiver to temporarily synchronize its bit-clock with the transmitter's clock for the duration of that transmission. As soon as one frame ends and the next begins, the temporary synchronization must begin again.
 
-# Data Link Lyaer : 
+## Data Link Lyaer
 IEEE 802.2 is the original name of the ISO/IEC 8802-2 standard which defines logical link control (LLC) as the upper portion of the data link layer of the OSI Model.
 
 The LLC is a software component that provides a uniform interface to the user of the data link service, usually the network layer. LLC offers three types of services (aka connection mode):
@@ -136,6 +137,10 @@ To name few of these protocol and their port-number:
 + DHCP (Dynamic Host Configuration Prtcl): UDP:67
 + HTTP (Hyper Text Transfer Prtcl):80
 
-!Note: when a client connects to a server it uses the protocol port number as its Destination Port, and a high number port number (Ephemeral port) as its Source Port,
-!Note: Ephemeral ports: client's source ports number greater than 1023
+> [!Note] when a client connects to a server it uses the protocol port number as its Destination Port, and a high number port number (Ephemeral port) as its Source Port,
+
+
+> [!Note] Ephemeral ports: client's source ports number greater than 1023
+
+
 

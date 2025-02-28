@@ -1,12 +1,12 @@
 <!-- Layer2Security.md -->
 
->Note: the switchports by defualts are 'dynamic auto'
+> [!Note] the switchports by defualts are 'dynamic auto'
 
-# MAC flooding (aka CAM table overflow attack): 
+## MAC flooding (aka CAM table overflow attack): 
 MAC flooding is an attack where the attacker floods the switch with MAC addresses, knwoing that all switches have a limited number of MAC addresses that they can lean off of all their ports, and when that number is reached the switch will turn each VLAN into a HUB, broadcasting all frame of one VLAN over all ports belonging to that VLAN.
 > show mac address-table count !display the maximum number of MAC address the switch can learn.
 
-# Port security: 
+### Port security: 
 Port security is the solution for theses Layer Two attacks.
 A typical user uses just a single MAC address. Exceptions to this may be a device running virtual machine or two that might use different MAC addresses than their host, or if there is an IP phone with a built-in switch, which may also account for additional MAC addresses.
 
@@ -37,19 +37,19 @@ port-security: secure-up !if the port-security is enabled and the port is up, el
 
 
 
-# Set the port-security aging time
+### Set the port-security aging time
 community.cisco.com/t5/switching/port-security-aging-time-what-is-it-good-for/td-p/1864366
 switchport port-security aging ? {static, time, type}
 switchport port-security aging type? {absolute, inactive}
 
-# There are two types of aging you can configure:
+### There are two types of aging you can configure:
 1.)absolute—the secure addresses on that port are deleted after the specified aging time.
 2.)inactivity—the secure addresess on this port are  deleted only if the secure addresses are inactive for the specified  aging time.
 you have "inactivitiy" configured, which means that after 2 min(the time you have specified) the secure mac addresses are deleted.
 this feature is useful if you want to grant access only for a certain time.
 
 
-# Mac-address forbidden
+### Mac-address forbidden
 Sets the MAC address forbidden on the interface.
 Switch(config-if)# switchport port-security mac-address forbidden
 Or, Sets the MAC address forbidden on all interfaces, globally.
