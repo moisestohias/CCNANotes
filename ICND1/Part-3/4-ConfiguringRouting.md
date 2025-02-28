@@ -49,20 +49,23 @@ When we give the network command in the router configuration mode, we're not say
 + then each devices going run the Dijkstra SPF (Shortest Path First) algorithm to determine the best path, comming up with Sortest Path Tree (SPT), then that path is going to be CANDIDATE to be injected in the routing table. 
 + CANDIDATE : means just bc that OSPF came up with this route to get to this network doesn't mean it's worthy to be put in the routing table because we still have the Administrative Distance, bc if the same network has been learned by another Routing Source (4x: static) the OSPF path will not be injected in the Routing Table.
 
-# Dijkstra : considers a Topology and calculate the shortest Path to a destination.
-# Hello : protocol used to discover OSPF neighbor and confirm reachability (is the link  still alive, if we don't hear from the neighbor after certain period of time called the Dead Interval (40s) then the router can conclude its neighbor router is no longer up), also use in the election of Designated Router,
+### Dijkstra : 
++ Considers a Topology and calculate the shortest Path to a destination.
+### Hello: 
+Protocol used to discover OSPF neighbor and confirm reachability (is the link  still alive, if we don't hear from the neighbor after certain period of time called the Dead Interval (40s) then the router can conclude its neighbor router is no longer up), also use in the election of Designated Router,
 
-** the Hello protocol is what's going to be used for the election of the Designated Router **
+**the Hello protocol is what's going to be used for the election of the Designated Router**
 
-*** Neighborship vs Adjacency in the case of OSPF : 
-# Neighbors :
+## Neighborship vs Adjacency in the case of OSPF : 
+### Neighbors :
 - reside on the same network link (same subnet), 
 - exchange Hello messages   
-# Adjacencent : 
+### Adjacencent : 
 - are neighbors.
 - the exchange link state updates (LSUs), and Data Description (DD) packet.
 
-# DataBase Description packet (DBD): contains all known LSUs, which are used to construct identical database between two neighbors.
+### DataBase Description packet (DBD): 
+Contains all known LSUs, which are used to construct identical database between two neighbors.
 
 # Link state Advertisement LSAs: info router sent & receive about network reachablity, and used to construct Link State data-base.   
 # Link state Update LSUs: packet that carries LSAs, 
@@ -72,17 +75,22 @@ When we give the network command in the router configuration mode, we're not say
 # Designated Router DR, Backup Designated Router BDR.
 - if we have many routers in the same subnet we don't have to form adjacency between every routers bc this will be redundant, routers only form adjacency with Designated and Backup Designated Routers. 
 
-** the formula for counting the number of neighborship in the case of multiple routers: 
-- number of adjacencies = (n*(n-1))/2, where n is the number of router  ** same as # of link in meshed topo.
+The formula for counting the number of neighborship in the case of multiple routers: 
+$$ \text{Number of adjacencies} = (n*(n-1))/2 $$ 
+where n is the number of router  ** same as # of link in meshed topo.
 
-# Electing Designated Router : the Hello protocol is what's going to be used, a router with OSPF highest priority value win the election, 
+## Electing Designated Router 
+The Hello protocol is what's going to be used, a router with OSPF highest priority value win the election, 
 + OSPF priority value is associated with an interface and can be a value in the range 0 - 255 *
 + OSPF with priority value of 0 means that the router will not become a DR *
 + by defaul an interface have a priority value of 1 * 
-# (config-if)# ip ospf priority "value", administratively influence who's going to be the DR and BDR.
+
++ `(config-if)# ip ospf priority "value"` Administratively influence who's going to be the DR and BDR.
 
 If we connect our router and all router have the same OSPF priority value, so everything is a tie, the Router with the highest Router ID (RID)
-> Note: the RID is used to identify the node in the OSPF graph (map).
+
+> [!Note] the RID is used to identify the node in the OSPF graph (map).
+
 # (router)#router-id "id", configuring the Router ID
 + If the RID is not configured (using the command "router-id <RID>" command) on the routers, the router with the highest numerical IP address of the LoopBack interface that is up and operational in that router, and is going to be the DR, if no Loopback is configured then the highest numerical IP address of physical interface that is up and operational    
 + We can assign an IP from the public space to the Loopback interface, and it's not going to be advertised, and it's not reachable by the neighboring routers, and this IP is just for setting the router ID, many Net Admin do that 
@@ -125,33 +133,39 @@ If we connect our router and all router have the same OSPF priority value, so ev
 ### Full State:
 - when both router have an identical Link State data-base we've know reached fully formed Adjacency
 
-==========================================================================
+---
 
-# OSPF Cost (metric): OSPF uses default reference bandwidth of 100Mbps 100_000_00 bps to calculate its cost.
+### OSPF Cost (metric) 
+> [!Note] OSPF uses default reference bandwidth of 100Mbps 100_000_00 bps to calculate its cost. 
 Cost =  reference BW / interface BW
-+ when the link is 1Gbps and the reference bandwidth is 100Mbps the cost comes out to be 0.1 and this invalid cost bc ** the cost can only be an integer of 16 bit long **, so the cost in this case is considered as 1 *
-+ to fix the issue of floating point cost we use higher reference bandwidth *
-!Warning: The problem of the reference bandwidth might show up in the adverse scenario, in case of if we set it to very high value, and the are slow link on the network like 64 Kbit/s wan link and the reference bandwidth is e.g 10G and if you do the math this will comes up to be 10,000,000 / 64 = 156,250 and this number is definitely greater than the maximum reference bandwidth 65,536 as a result the 64k links will have the same cost as 128k links.
-> the reference bandwidth is a matter of balance  
-# auto-cost bandwidth-reference "value", the unit in Mbps 
 
-# Area: is a collection of networks that are running OSPF, the  interfaces of the router are what belong to a certain area not the router it self as a matter of fact the router could have different interfaces that belong to different areas.
++ When the link is 1Gbps and the reference bandwidth is 100Mbps the cost comes out to be 0.1 and this invalid cost bc ** the cost can only be an integer of 16 bit long **, so the cost in this case is considered as 1 *
++ To fix the issue of floating point cost we use higher reference bandwidth *
+> [!Warning] The problem of the reference bandwidth might show up in the adverse scenario, in case of if we set it to very high value, and the are slow link on the network like 64 Kbit/s wan link and the reference bandwidth is e.g 10G and if you do the math this will comes up to be 10,000,000 / 64 = 156,250 and this number is definitely greater than the maximum reference bandwidth 65,536 as a result the 64k links will have the same cost as 128k links.
+> the reference bandwidth is a matter of balance  
+
++ The unit in Mbps `auto-cost bandwidth-reference "value"`
+
+### Area: 
+Ares is a collection of networks that are running OSPF, the  interfaces of the router are what belong to a certain area not the router it self as a matter of fact the router could have different interfaces that belong to different areas.
 
 - all routers in the same area have the same view of the network they see the same network map so they run the DIGKSTRA algorithm on the same data, in a larger network we might want to divide the network to smaller areas so it dosent take to long for the router to perform its calculations especially for old routers that doesn't have much processing power, and all those areas need to be adjacent to AREA 0 aka the Back-Bone Area, router that sits in between areas and connect them is known as Area Border Router (ABR) and this router will have the data base of both areas and run the DIJKSTRA algorithm on both area
 - if we have area that is not adjacent to area 0 we can creat a Virtual Link to area 0.
 
-# Network types:
--> Broadcast Network: like in case of Ethernet, multitude of router could be connected via a switch to each others, 
+#### Network types:
+##### Broadcast Network: 
+Like in case of Ethernet, multitude of router could be connected via a switch to each others, 
 - the DR and the BDR will be elected. 
 - the default hello interval is 10 second.
 - the dead interval is 4 time the hello interval so it's 40 second.
 
--> Point-to-Point Network : 
+##### Point-to-Point Network : 
 - since we only have two router, there is no need to elect DR & BDR
 - the default hello interval is 10 second.
 - the dead interval is 4 time the hello interval so it's 40 second.
 
--> Non-Broadcast Network aka NBMA(Non-Broadcast Multi Access) : like frame relay network
+##### Non-Broadcast Network aka NBMA(Non-Broadcast Multi Access) : 
+Like frame relay network
 - the DR and the BDR should be elected, but we have to strategically affect which one that will be elected as the designated. 
 - the default hello interval is 30 second.
 - the dead interval is 4 time the hello interval so it's 120s or 2m
@@ -189,12 +203,16 @@ if we have traditional plain layer two switch that is not capable of interVlam r
 
 ## Multilayer Switch (Layer Three Interface)
 ## SVI Switch Virtual Interface
-on a multilayer switch each VLAN could have a virtual interface that encompasses all ports on that VLAN associated to it, and can be assigned an IP Address just like the router's interface. and that SVI routes traffic for all vlan ports
-- creating SVI:
+On a multilayer switch each VLAN could have a virtual interface that encompasses all ports on that VLAN associated to it, and can be assigned an IP Address just like the router's interface. and that SVI routes traffic for all vlan ports
+- Creating SVI:
+```
 (config)# int vlan "vlan id"
 (config-if)# ip address "IP" "mask": like u normally would do with the router's interface.
-- to be able to route packets, ip routing must be enabled.
+```
+- To be able to route packets, ip routing must be enabled.
 (config)# ip routing
-- to connect the Multilayer Switch to a router, we need ROUTED PORT, the port on the Multilayer Switch connected to the router need to be routed port, it needs an ip address, and by default all the switch's ports are in switchport mode, to change that, use "no switchport".
+- To connect the Multilayer Switch to a router, we need ROUTED PORT, the port on the Multilayer Switch connected to the router need to be routed port, it needs an ip address, and by default all the switch's ports are in switchport mode, to change that, use "no switchport".
+```
 (config-if)# no switchport
 (config-if)# ip address "IP" "MASK":  just when connecting two router, we can use /30 mask.
+```
