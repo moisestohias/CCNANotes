@@ -58,19 +58,19 @@ Protocol used to discover OSPF neighbor and confirm reachability (is the link  s
 
 ## Neighborship vs Adjacency in the case of OSPF : 
 ### Neighbors :
-- reside on the same network link (same subnet), 
-- exchange Hello messages   
+- Reside on the same network link (same subnet), 
+- Exchange Hello messages   
 ### Adjacencent : 
-- are neighbors.
-- the exchange link state updates (LSUs), and Data Description (DD) packet.
+- Are neighbors.
+- The exchange link state updates (LSUs), and Data Description (DD) packet.
 
 ### DataBase Description packet (DBD): 
 Contains all known LSUs, which are used to construct identical database between two neighbors.
 
-# Link state Advertisement LSAs: info router sent & receive about network reachablity, and used to construct Link State data-base.   
-# Link state Update LSUs: packet that carries LSAs, 
-# Link state Request LSRs: used to ask for the messing LSAs, 
-# Link state Acknowledgment LSAck: used by router to confirm it received and LSU.
++ **Link state Advertisement LSAs**: info router sent & receive about network reachablity, and used to construct Link State data-base.   
++ **Link state Update LSUs**: packet that carries LSAs, 
++ **Link state Request LSRs**: used to ask for the messing LSAs, 
++ **Link state Acknowledgment LSAck**: used by router to confirm it received and LSU.
 
 # Designated Router DR, Backup Designated Router BDR.
 - if we have many routers in the same subnet we don't have to form adjacency between every routers bc this will be redundant, routers only form adjacency with Designated and Backup Designated Routers. 
@@ -98,13 +98,14 @@ If we connect our router and all router have the same OSPF priority value, so ev
 
 > Note: When you configure a router with OSPF it start sending Hellos as soon as you issue the first network command, if it can't find any neighbor for dead timer, it elect itself as the designated and list it self as the designated router in the Hello packet and if any new router even with a higher priority or RID, come up and find that the DR (or DR&BDR) already has/have been elected it will submit to that, and it is not going to cause it to preempt the existent DR. That's why the designated election is referred to as not-preemptive unlike STP.
 
-!TIP: to cause the election to take place again, you can clear the OSPF process on the routers; using the command: clear ip ospf <PID> process 
+> [!TIP] to cause the election to take place again, you can clear the OSPF process on the routers; using the command: `clear ip ospf <PID> process` 
+
 > Note: "clear ip ospf proc" restarts the process and all OSPF neighbors are restarted
 
 > Note: Even if the a router elect itself as the DR in the absence of other routers, this is only applicable for the adjacency (with whom routers form adjacency). For the master and slave election in the extart state the router with the highest RID is who will be the Master and set the starting sequence number.
 
 
-# Forming an Adjacency : between two Routers R1 & R2 ===================
+## Forming an Adjacency between two Routers R1 & R2
 ### 1 Down State:
 - if the link is down (there's no communication between R1 and R2), both routers are in Down State.
 ### 2 Init State:
