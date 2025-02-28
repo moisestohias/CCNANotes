@@ -108,7 +108,7 @@ ip route : similar output to netstat -rn
 
 
 
-# Network Address Translation (NAT)
+## Network Address Translation (NAT)
 NAT allows for the translation of private addresses to public addresses.
 >Note: NAT and its variations are different from port mapping (aka port forwarding), since port mapping is used for forwarding incoming traffic from the outside destine to certain port, to private local IP address.
 
@@ -151,15 +151,17 @@ Extended: 100- : filter on on IP, TCP/UDP source or destination or both
 - Then just like before we need to map the pool of public addresses with the list of private address, to tie the pool with the list of the private ip :
 (config)# ip nat inside source list "ACL ID" pool "Pool name"
 
-# PAT Port Address Translation
+## PAT Port Address Translation
 - With NAT we had one-to-one mapping but with PAT we have many to one. so we can have multiple devices that use the same IP address to go outside the local network, and that is done throuth port mapping, 
 - The router uses port number, to map each device SOCKET (IP and Port combination). 
 
 - normally the router does not use ports, but when using PAT, the router will use ports just like end devices, but for the sole purpose of distinguishing between traffic of the defferent devices. 
 
 - just like with NAT we need to tell the router which interfaces are inside and which are outside local.
+```
 (config-if)#ip nat inside
 (config-if)#ip nat outside
+```
 
 - and also just like with NAT we need to tell the router which subnets are inside local (Private), for that we use ACL agian. 
 (config)#access-list "ACL ID" permit "subnet ID" "wildcard mask" overload
@@ -171,7 +173,8 @@ Extended: 100- : filter on on IP, TCP/UDP source or destination or both
 -to make sure that the translation take a place you can use: 
 >sh ip nat translation, or sh ip nat biding
 
-# NTP (Network Timing Protocol): is protocol that allows you to synchronize devices on your network to one clock, so you can doevent correlation, when interpreting the log messages for all devices to easily troubleshoot the network and detect where the problem might be coming from. Another aspect of synchronizing networking devices is for security purpose, digital certificates have an expiration date attached to them, so having the time correctly synchronized for all devices is important to check expired certificates.
+# NTP (Network Timing Protocol): 
+NTP is protocol that allows you to synchronize devices on your network to one clock, so you can doevent correlation, when interpreting the log messages for all devices to easily troubleshoot the network and detect where the problem might be coming from. Another aspect of synchronizing networking devices is for security purpose, digital certificates have an expiration date attached to them, so having the time correctly synchronized for all devices is important to check expired certificates.
 
 - NTP is a UDP based protocol uses port 123, and relies on value called the stratum number to determine the believability of the time source. Like atomic clock on the internet they are supper accurate therefore they have stratum number of one and they are believable.
 >Note: technically the atomic clock has a stratum number of zero, the server that gets his clock directly from the atomic clock has stratum number of 1.
@@ -192,9 +195,9 @@ Extended: 100- : filter on on IP, TCP/UDP source or destination or both
 
 >Note: NTP can take several minutes to synchronize between devices*
 - show commands to display ntp informations:
-# show clock : display the clock
-# show ntp association : displays the ntp server and the source.
-# show ntp status: displays the ntp synchronisation state and the strutum number 
++ `show clock`: display the clock
++ `show ntp association`: displays the ntp server and the source.
++ `show ntp status`: displays the ntp synchronisation state and the strutum number 
 
 # ACL Access Control List
 - An ACL can contain multiple entry rules.
@@ -222,14 +225,17 @@ Extended: 100- : filter on on IP, TCP/UDP source or destination or both
 
 # Named ACLs
 Allows you to use names for both standard and extended ACLs.
+```
 (config)# ip access-list standard "ACL NAME": Standard Named ACL
 (config)# ip access-list extended "ACL NAME": Extended Named ACL
-* you can have multiple premit statement on the same named ACL *
 (config-ext-nacl)# permit ip host "HOST IP" host "DESTINATION IP"
 (config-ext-nacl)# permit tcp host "HOST IP" host "DESTINATION IP" eq "protocol port number or protocol name"
-- applying Extended ACL to an interface:
-(config-if)# ip access-group "ACL NAME" in
+```
+> [!Note] you can have multiple premit statement on the same named ACL
 
+- applying Extended ACL to an interface: `(config-if)# ip access-group "ACL NAME" in`
 - Specifying the ACL sequence number manually: 
+```
 (config)# ip access-list extended "ACL NAME"
 (config-ext-nacl)# "SEQUENCE NUMBER" permit or deny..
+```
