@@ -15,11 +15,13 @@ IPv6 : is 128 bit address that meant to solve the problem of the expiration of t
 # IPv6 can be abbreviated, and there are rules for doing so, 
 - leading zeros in each field can be omitted 
 - contiguois field containing all zero can be represented with double colon. (only once of an IP) 
-4x: 2345:0123:4040:0000:0000:0000:000A:000B -> 2345:123:4040::A:B
-    2000:0000:0000:0000:1234:0000:0000:000B -> 2000::1234:0:0:B
+
+eg: 
+2345:0123:4040:0000:0000:0000:000A:000B -> 2345:123:4040::A:B
+2000:0000:0000:0000:1234:0000:0000:000B -> 2000::1234:0:0:B
 
 # like IPv4 there are different types of IPv6
-|------------------------------------------|
+
 |       IPv6               |    IPv4       |
 |--------------------------|---------------|
 | Global Unicast           |  Public IP    |
